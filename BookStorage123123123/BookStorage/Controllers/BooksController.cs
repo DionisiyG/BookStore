@@ -16,7 +16,7 @@ namespace BookStorage.Controllers
         // GET: Books
         public ActionResult Index()
         {
-            
+
             var books = dbBooks.Books.Include(a => a.Author);
             return View(books.ToList());
         }
@@ -81,9 +81,12 @@ namespace BookStorage.Controllers
                 if (ModelState.IsValid)
                 {
                     // TODO: Add update logic here
+
+                    //book.Author = null; AuthorName cant be edited
+
                     dbBooks.Entry(book).State = EntityState.Modified;
-                  
                     dbBooks.SaveChanges();
+
                     return RedirectToAction("Index");
                 }
             }
