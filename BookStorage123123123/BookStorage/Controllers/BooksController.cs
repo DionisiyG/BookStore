@@ -44,67 +44,62 @@ namespace BookStorage.Controllers
         [HttpPost]
         public ActionResult Create(Book book)
         {
-            try
+            if (!ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    dbBooks.Books.Add(book);
-                    dbBooks.SaveChanges();
-                    return RedirectToAction("Index");
-                }
+                return View(book);
+
             }
-            catch (DataException)
-            {
-                //Log the error (add a variable name after DataException) 
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
-            }
-            return View(book);
+            dbBooks.Books.Add(book);
+            dbBooks.SaveChanges();
+            return RedirectToAction("Index");
+
         }
 
-        // GET: Books/Edit/5
+        // GET: Books/Edit/5       
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return HttpNotFound();
             }
-            Book bookEdit = dbBooks.Books.Include(a => a.Author).Where(a => a.AuthorId == id).Single();
+            //var compModel = new BookAuthorCompositeModel();
+            //compModel.book = dbBooks.Books.ToList().Where(a => a.Id == id).SingleOrDefault();
+            //compModel.author = dbBooks.Authors.ToList().Where(x => x.Id == id).SingleOrDefault();
+             Book bookEdit = dbBooks.Books.ToList().Where(a => a.Id == id).SingleOrDefault();
+            var list = dbBooks.Books.Select(x => new { ID = x.Id, AuthorName = x.Author.AuthorName });
+            ViewBag.Authors = new SelectList(list, "Id", "AuthorName");
             return View(bookEdit);
         }
-
         // POST: Books/Edit/5
         [HttpPost]
         public ActionResult Edit(Book book)
         {
-            try
+            if (ModelState.IsValid)
             {
-                if (ModelState.IsValid)
-                {
-                    // TODO: Add update logic here
-
-                    //book.Author = null; AuthorName cant be edited
-
-                    dbBooks.Entry(book).State = EntityState.Modified;
-                    dbBooks.SaveChanges();
-
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (DataException)
-            {
-                //Log the error (add a variable name after DataException) 
-                ModelState.AddModelError("", "Unable to save changes. Try again, and if the problem persists see your system administrator.");
+                //dbBooks.Entry(BAmodel.book).State = EntityState.Modified;
+                //dbBooks.Entry(BAmodel.author).State = EntityState.Modified;
+                dbBooks.Entry(book).State = EntityState.Modified;
+                dbBooks.SaveChanges();
+                return RedirectToAction("Index");
             }
             return View(book);
         }
+        [HttpPost]
+        public ActionResult AuthorPartial(Author author)
+        {
+            if (ModelState.IsValid)
+            {
+                dbBooks.Entry(author).State = EntityState.Modified;
+                dbBooks.SaveChanges();
+                //  return RedirectToAction("Index");
+            }
+            return View(author);
+        }
 
         // GET: Books/Delete/5
+        [HandleError()]
         public ActionResult Delete(int id, bool? saveChangesError)
         {
-            if (saveChangesError.GetValueOrDefault())
-            {
-                ViewBag.ErrorMessage = "Unable to save changes. Try again, and if the problem persists see your system administrator.";
-            }
             return View(dbBooks.Books.Include(a => a.Author).Where(a => a.AuthorId == id).Single());
         }
 
