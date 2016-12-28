@@ -12,7 +12,8 @@ namespace BookStorage.Controllers
     public class BooksController : Controller
     {
         BookContext dbBooks = new BookContext();
-
+        BookRepository bookRep = new BookRepository();
+        AuthorRepository authorRep = new AuthorRepository();
         // GET: Books
         public ActionResult Index()
         {
@@ -63,9 +64,8 @@ namespace BookStorage.Controllers
                 return HttpNotFound();
             }
             //var compModel = new BookAuthorCompositeModel();
-            //compModel.book = dbBooks.Books.ToList().Where(a => a.Id == id).SingleOrDefault();
-            //compModel.author = dbBooks.Authors.ToList().Where(x => x.Id == id).SingleOrDefault();
-             Book bookEdit = dbBooks.Books.ToList().Where(a => a.Id == id).SingleOrDefault();
+            
+            Book bookEdit = dbBooks.Books.ToList().Where(a => a.Id == id).SingleOrDefault();
             var list = dbBooks.Books.Select(x => new { ID = x.Id, AuthorName = x.Author.AuthorName });
             ViewBag.Authors = new SelectList(list, "Id", "AuthorName");
             return View(bookEdit);
@@ -76,24 +76,14 @@ namespace BookStorage.Controllers
         {
             if (ModelState.IsValid)
             {
-                //dbBooks.Entry(BAmodel.book).State = EntityState.Modified;
-                //dbBooks.Entry(BAmodel.author).State = EntityState.Modified;
+
+                
+
                 dbBooks.Entry(book).State = EntityState.Modified;
                 dbBooks.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(book);
-        }
-        [HttpPost]
-        public ActionResult AuthorPartial(Author author)
-        {
-            if (ModelState.IsValid)
-            {
-                dbBooks.Entry(author).State = EntityState.Modified;
-                dbBooks.SaveChanges();
-                //  return RedirectToAction("Index");
-            }
-            return View(author);
         }
 
         // GET: Books/Delete/5
@@ -115,7 +105,6 @@ namespace BookStorage.Controllers
             }
             catch (DataException)
             {
-                //Log the error (add a variable name after DataException) 
                 return RedirectToAction("Delete",
                     new System.Web.Routing.RouteValueDictionary {
                 { "id", id },

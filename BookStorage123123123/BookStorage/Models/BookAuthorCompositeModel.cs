@@ -7,7 +7,7 @@ namespace BookStorage.Models
 {
     public class BookAuthorCompositeModel
     {
-        public Author author { get; set; }
-        public Book book { get; set; }
+        public Author Author { get; set; }
+        public Book Book { get; set; }
     }
 }

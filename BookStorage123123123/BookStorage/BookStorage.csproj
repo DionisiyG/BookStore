@@ -197,6 +197,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Models\Author.cs" />
+    <Compile Include="Models\AuthorRepository.cs" />
     <Compile Include="Models\BookAuthorCompositeModel.cs" />
     <Compile Include="Models\BookContext.cs" />
     <Compile Include="Controllers\BooksController.cs" />
@@ -208,7 +209,9 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Book.cs" />
     <Compile Include="Models\BookDbInitializer.cs" />
+    <Compile Include="Models\BookRepository.cs" />
     <Compile Include="Models\IdentityModels.cs" />
+    <Compile Include="Models\IRepository.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -272,7 +275,6 @@
     <Content Include="Views\Books\Details.cshtml" />
     <Content Include="Views\Books\Create.cshtml" />
     <Content Include="Views\Books\Delete.cshtml" />
-    <Content Include="Views\Books\AuthorPartial.cshtml" />
     <Content Include="Views\Books\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
