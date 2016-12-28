@@ -12,8 +12,7 @@ namespace BookStorage.Controllers
     public class BooksController : Controller
     {
         BookContext dbBooks = new BookContext();
-        BookRepository bookRep = new BookRepository();
-        AuthorRepository authorRep = new AuthorRepository();
+
         // GET: Books
         public ActionResult Index()
         {
@@ -64,21 +63,19 @@ namespace BookStorage.Controllers
                 return HttpNotFound();
             }
             //var compModel = new BookAuthorCompositeModel();
-            
+
             Book bookEdit = dbBooks.Books.ToList().Where(a => a.Id == id).SingleOrDefault();
             var list = dbBooks.Books.Select(x => new { ID = x.Id, AuthorName = x.Author.AuthorName });
             ViewBag.Authors = new SelectList(list, "Id", "AuthorName");
             return View(bookEdit);
         }
+
         // POST: Books/Edit/5
         [HttpPost]
         public ActionResult Edit(Book book)
         {
             if (ModelState.IsValid)
             {
-
-                
-
                 dbBooks.Entry(book).State = EntityState.Modified;
                 dbBooks.SaveChanges();
                 return RedirectToAction("Index");

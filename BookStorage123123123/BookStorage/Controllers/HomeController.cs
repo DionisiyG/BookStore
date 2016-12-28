@@ -10,10 +10,9 @@ namespace BookStorage.Controllers
 {
     public class HomeController : Controller
     {
-        //BookContext db = new BookContext();
+        
         public ActionResult Index()
         {
-          //  var books = db.Books.Include(a => a.Author);
             return View();
         }
 

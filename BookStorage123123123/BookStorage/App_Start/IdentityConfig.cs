@@ -12,6 +12,7 @@ using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using BookStorage.Models;
 
+
 namespace BookStorage
 {
     public class EmailService : IIdentityMessageService
